@@ -1,4 +1,4 @@
-package com.github.dewinjm.yearmonthpicker;
+package com.github.dewinjm.monthyearpicker;
 
 import android.view.View;
 import android.widget.NumberPicker;

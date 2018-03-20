@@ -1,4 +1,4 @@
-package com.github.dewinjm.yearmonthpicker.demo;
+package com.github.dewinjm.monthyearpicker.demo;
 
 import org.junit.Test;
 
