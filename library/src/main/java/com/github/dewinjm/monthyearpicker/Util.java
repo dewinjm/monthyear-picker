@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Util {
+
     /**
      * Gets a calendar for locale bootstrapped with the value of a given calendar.
      *
@@ -11,17 +12,24 @@ public class Util {
      * @param locale      The locale.
      */
     public static Calendar getCalendarForLocale(Calendar oldCalendar, Locale locale) {
-        if (oldCalendar == null) {
+        if (locale == null)
+            throw new IllegalArgumentException("You must specify the Locate value");
+
+        if (oldCalendar == null)
             return Calendar.getInstance(locale);
-        } else {
-            long currentTimeMillis = oldCalendar.getTimeInMillis();
-            Calendar newCalendar = Calendar.getInstance(locale);
-            newCalendar.setTimeInMillis(currentTimeMillis);
-            return newCalendar;
-        }
+
+        long currentTimeMillis = oldCalendar.getTimeInMillis();
+        Calendar newCalendar = Calendar.getInstance(locale);
+        newCalendar.setTimeInMillis(currentTimeMillis);
+        return newCalendar;
     }
 
-    public static boolean usingNumericMonths(String[] value) {
+    /**
+     * Valid if the list of months is numeric.
+     *
+     * @param value Array of month.
+     */
+    public static boolean isNumericMonths(String[] value) {
         return Character.isDigit(value[Calendar.JANUARY].charAt(0));
     }
 }

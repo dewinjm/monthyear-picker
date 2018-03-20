@@ -65,7 +65,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         numberOfMonths = tempDate.getActualMaximum(Calendar.MONTH) + 1;
         shortMonths = new DateFormatSymbols().getShortMonths();
 
-        if (Util.usingNumericMonths(shortMonths)) {
+        if (Util.isNumericMonths(shortMonths)) {
             // We're in a locale where a date should either be all-numeric, or all-text.
             // All-text would require custom NumberPicker formatters for day and year.
             shortMonths = new String[numberOfMonths];
