@@ -7,8 +7,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Presenter implements NumberPicker.OnValueChangeListener {
-    private static final int DEFAULT_START_YEAR = 1900;
-    private static final int DEFAULT_END_YEAR = 2100;
+    public static final int DEFAULT_START_YEAR = 1900;
+    public static final int DEFAULT_END_YEAR = 2100;
     private Calendar tempDate;
     private Calendar currentDate;
     private Calendar minDate;
