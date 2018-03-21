@@ -1,10 +1,8 @@
 package com.github.dewinjm.monthyearpicker;
 
-import android.view.View;
 import android.widget.NumberPicker;
 
 import java.text.DateFormatSymbols;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -16,27 +14,19 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
     private Calendar minDate;
     private Calendar maxDate;
     private Locale currentLocale;
-
     private String[] shortMonths;
     private int numberOfMonths;
-    private final NumberPicker monthSpinner;
-    private final NumberPicker yearSpinner;
+    private IPickerView pickerView;
 
     private OnDateChangedListener onDateChangedListener;
 
-    public Presenter(View view) {
+    Presenter(IPickerView pickerView) {
         setCurrentLocale(Locale.getDefault());
 
-        monthSpinner = view.findViewById(R.id.month);
-        monthSpinner.setMinValue(0);
-        monthSpinner.setMaxValue(numberOfMonths - 1);
-        monthSpinner.setDisplayedValues(shortMonths);
-        monthSpinner.setOnLongPressUpdateInterval(200);
-        monthSpinner.setOnValueChangedListener(this);
-
-        yearSpinner = view.findViewById(R.id.year);
-        yearSpinner.setOnLongPressUpdateInterval(100);
-        yearSpinner.setOnValueChangedListener(this);
+        this.pickerView = pickerView;
+        pickerView.setShortMonth(shortMonths);
+        pickerView.setOnValueChanged(this);
+        pickerView.setNumberOfMonth(numberOfMonths - 1);
 
         // set the min date giving priority of the minDate over startYear
         tempDate.clear();
@@ -79,7 +69,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         tempDate.setTimeInMillis(currentDate.getTimeInMillis());
 
         // take care of wrapping of days and months to update greater fields
-        if (numberPicker == monthSpinner) {
+        if (numberPicker == pickerView.getMonthSpinner()) {
             if (oldVal == 11 && newVal == 0) {
                 tempDate.add(Calendar.MONTH, 1);
             } else if (oldVal == 0 && newVal == 11) {
@@ -87,7 +77,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
             } else {
                 tempDate.add(Calendar.MONTH, newVal - oldVal);
             }
-        } else if (numberPicker == yearSpinner) {
+        } else if (numberPicker == pickerView.getYearSpinner()) {
             tempDate.set(Calendar.YEAR, newVal);
         } else {
             throw new IllegalArgumentException();
@@ -99,7 +89,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         notifyDateChanged();
     }
 
-    public void init(int year, int monthOfYear, OnDateChangedListener onDateChangedListener) {
+    void init(int year, int monthOfYear, OnDateChangedListener onDateChangedListener) {
         setDate(year, monthOfYear);
         updateSpinners();
         this.onDateChangedListener = onDateChangedListener;
@@ -145,45 +135,33 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
     }
 
     private void updateSpinners() {
-        // set the spinner ranges respecting the min and max dates
+        int monthMin = 0;
+        int monthMax = 11;
+
         if (currentDate.equals(minDate)) {
-            monthSpinner.setDisplayedValues(null);
-            monthSpinner.setMinValue(currentDate.get(Calendar.MONTH));
-            monthSpinner.setMaxValue(currentDate.getActualMaximum(Calendar.MONTH));
-            monthSpinner.setWrapSelectorWheel(false);
+            monthMin = currentDate.get(Calendar.MONTH);
+            monthMax = currentDate.getActualMaximum(Calendar.MONTH);
         } else if (currentDate.equals(maxDate)) {
-            monthSpinner.setDisplayedValues(null);
-            monthSpinner.setMinValue(currentDate.getActualMinimum(Calendar.MONTH));
-            monthSpinner.setMaxValue(currentDate.get(Calendar.MONTH));
-            monthSpinner.setWrapSelectorWheel(false);
-        } else {
-            monthSpinner.setDisplayedValues(null);
-            monthSpinner.setMinValue(0);
-            monthSpinner.setMaxValue(11);
-            monthSpinner.setWrapSelectorWheel(true);
+            monthMin = currentDate.getActualMinimum(Calendar.MONTH);
+            monthMax = currentDate.get(Calendar.MONTH);
         }
 
-        // make sure the month names are a zero based array
-        // with the months in the month spinner
-        String[] displayedValues = Arrays.copyOfRange(
-                shortMonths, monthSpinner.getMinValue(), monthSpinner.getMaxValue() + 1);
-        monthSpinner.setDisplayedValues(displayedValues);
+        pickerView.dateUpdate(PickerField.MONTH,
+                monthMax,
+                monthMin,
+                currentDate);
 
-        // year spinner range does not change based on the current date
-        yearSpinner.setMinValue(minDate.get(Calendar.YEAR));
-        yearSpinner.setMaxValue(maxDate.get(Calendar.YEAR));
-        yearSpinner.setWrapSelectorWheel(false);
-
-        // set the spinner values
-        yearSpinner.setValue(currentDate.get(Calendar.YEAR));
-        monthSpinner.setValue(currentDate.get(Calendar.MONTH));
+        pickerView.dateUpdate(PickerField.YEAR,
+                maxDate.get(Calendar.YEAR),
+                minDate.get(Calendar.YEAR),
+                currentDate);
     }
 
-    public int getYear() {
+    int getYear() {
         return currentDate.get(Calendar.YEAR);
     }
 
-    public int getMonth() {
+    int getMonth() {
         return currentDate.get(Calendar.MONTH);
     }
 
