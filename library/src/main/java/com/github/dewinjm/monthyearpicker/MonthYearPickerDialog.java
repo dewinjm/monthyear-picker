@@ -111,11 +111,11 @@ public class MonthYearPickerDialog extends AlertDialog implements DialogInterfac
         presenter.init(year, month, this);
     }
 
-    public void setMinDate(long minDate) {
+    void setMinDate(long minDate) {
         presenter.setMinDate(minDate);
     }
 
-    public void setMaxDate(long maxDate) {
+    void setMaxDate(long maxDate) {
         presenter.setMaxDate(maxDate);
     }
 
