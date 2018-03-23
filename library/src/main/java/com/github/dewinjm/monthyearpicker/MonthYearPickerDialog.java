@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import java.text.DateFormatSymbols;
+import java.util.Locale;
 
 public class MonthYearPickerDialog extends AlertDialog implements DialogInterface
         .OnClickListener, Presenter.OnDateChangedListener {
@@ -65,7 +66,7 @@ public class MonthYearPickerDialog extends AlertDialog implements DialogInterfac
 
     private void createTitle(int year, int monthOfYear) {
         String month = new DateFormatSymbols().getMonths()[monthOfYear];
-        title = String.format("%s - %s", month.toUpperCase(), year);
+        title = String.format(Locale.getDefault(), "%s - %s", month.toUpperCase(), year);
         setTitle(title);
     }
 

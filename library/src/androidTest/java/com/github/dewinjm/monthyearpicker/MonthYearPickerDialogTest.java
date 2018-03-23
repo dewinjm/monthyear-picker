@@ -9,6 +9,8 @@ import android.view.View;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.DateFormatSymbols;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -23,7 +25,10 @@ public class MonthYearPickerDialogTest {
         final int year = 2001;
         final int month = 6;
         final Context appContext = InstrumentationRegistry.getTargetContext();
-        final String title = String.format("%s - %s", String.valueOf(month).toUpperCase(), year);
+        final String title = String.format(Locale.getDefault(),
+                "%s - %s",
+                new DateFormatSymbols().getMonths()[month].toUpperCase(),
+                year);
 
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
@@ -146,7 +151,7 @@ public class MonthYearPickerDialogTest {
         });
 
         assertTrue(latch.await(timeout, SECONDS));
-        int valueNoTSelect=0;
+        int valueNoTSelect = 0;
         assertEquals(result[YEAR], valueNoTSelect);
         assertEquals(result[MONTH], valueNoTSelect);
     }
