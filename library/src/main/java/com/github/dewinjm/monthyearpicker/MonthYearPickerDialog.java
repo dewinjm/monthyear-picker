@@ -65,8 +65,9 @@ public class MonthYearPickerDialog extends AlertDialog implements DialogInterfac
     }
 
     private void createTitle(int year, int monthOfYear) {
-        String month = new DateFormatSymbols().getMonths()[monthOfYear];
-        title = String.format(Locale.getDefault(), "%s - %s", month.toUpperCase(), year);
+        Locale locale = Locale.getDefault();
+        String month = new DateFormatSymbols().getMonths()[monthOfYear].toUpperCase(locale);
+        title = String.format(locale, "%s - %s", month, year);
         setTitle(title);
     }
 
