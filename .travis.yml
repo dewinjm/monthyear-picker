@@ -7,7 +7,7 @@ env:
     - ANDROID_API=26
     - EMULATOR_API=21
     - ANDROID_BUILD_TOOLS=26.0.2
-    - ADB_INSTALL_TIMEOUT=5 # minutes
+    - ADB_INSTALL_TIMEOUT=10 # minutes
     - GRADLE_OPTS="-Xmx2048m -XX:MaxPermSize=1024m"
 
 notifications:
