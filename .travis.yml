@@ -2,23 +2,40 @@ language: android
 sudo: required
 jdk: oraclejdk8
 
+env:
+  global:
+    - ANDROID_API=26
+    - EMULATOR_API=21
+    - ANDROID_BUILD_TOOLS=26.0.2
+    - ADB_INSTALL_TIMEOUT=5 # minutes
+
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.2
-    - android-26
     - extra
+    - build-tools-$ANDROID_BUILD_TOOLS
+    - android-$ANDROID_API
+    - android-$EMULATOR_API_LEVEL
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
+    - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
+    - sys-img-armeabi-v7a-addon-google_apis-google-$EMULATOR_API_LEVEL
 
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-26
+licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
 
 before_install:
-    - yes | sdkmanager "platforms;android-26"
+    - yes | sdkmanager "platforms;android-$ANDROID_API"
+
+before_script:
+    - echo no | android create avd --force -n test -t android-$EMULATOR_API_LEVEL --abi armeabi-v7a
+    - emulator -avd test -no-skin -no-audio -no-window &
+    - android-wait-for-emulator
+    - adb shell input keyevent 82 &
 
 before_cache:
     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -30,10 +47,5 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - android list targets
-  - echo no | android create avd --force -n test -t android-26 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - chmod +x gradlew
   - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
