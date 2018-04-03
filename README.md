@@ -77,7 +77,7 @@ repositories {
 And add the library to your module **build.gradle**:
 ``` gradle
 dependencies {
-  compile 'com.github.dewinjm:retrofit-helper:1.0.1'
+  compile 'com.github.dewinjm:monthyear-picker:1.0.0'
 }
 ```
 ## License
