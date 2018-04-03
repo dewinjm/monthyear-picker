@@ -3,18 +3,18 @@
 [![jitpack](https://jitpack.io/v/dewinjm/monthyear-picker.svg)](https://jitpack.io/v/dewinjm/monthyear-picker.svg)
 [![Build Status](https://api.travis-ci.org/dewinjm/monthyear-picker.svg?branch=master)](https://travis-ci.org/dewinjm/monthyear-picker)
 
-Year and month picker library for Anndroid
+Month and Year picker library for Anndroid
 
 Simple Picker | With ranges Picker
 --- | ---
-![Simple Picker](https://raw.github.com/dewinjm/monthyear-picker/develop/demo/src/main/res/drawable/img_01.png) | ![With ranges Picker](https://raw.github.com/dewinjm/monthyear-picker/develop/demo/src/main/res/drawable/img_02.png)
+![Simple Picker](https://raw.github.com/dewinjm/monthyear-picker/develop/demo/src/main/res/drawable/img_02.png) | ![With ranges Picker](https://raw.github.com/dewinjm/monthyear-picker/develop/demo/src/main/res/drawable/img_01.png)
 
 ## Example
 Show MonthYear-picker in a simple way
 
 ``` java
-private int yearSelected;
-private int monthSelected;
+int yearSelected;
+int monthSelected;
 
 //Set default values
 Calendar calendar = Calendar.getInstance();
@@ -55,7 +55,8 @@ long minDate = calendar.getTimeInMillis(); // Get milliseconds of the modified d
 calendar.clear();
 calendar.set(2018, 11, 31); // Set maximum date to show in dialog
 long maxDate = calendar.getTimeInMillis(); // Get milliseconds of the modified date
-        
+
+// Create instance with date ranges values        
 MonthYearPickerDialogFragment dialogFragment =  MonthYearPickerDialogFragment
                 .getInstance(monthSelected, yearSelected, minDate, maxDate);
                 
