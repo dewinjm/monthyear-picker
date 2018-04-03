@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YearMonthPicker Example</string>
+    <string name="app_name">MonthYearPicker Example</string>
     <string name="show_datepicker">Click to show Picker</string>
     <string name="current_select">Values select:</string>
     <string name="with_ranges">Show with date ranges</string>
