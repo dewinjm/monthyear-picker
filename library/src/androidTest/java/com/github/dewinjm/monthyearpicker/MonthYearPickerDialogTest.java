@@ -48,6 +48,31 @@ public class MonthYearPickerDialogTest {
     }
 
     @Test
+    public void builderCustomTitle() throws Exception {
+        final int year = 2001;
+        final int month = 6;
+        final Context appContext = InstrumentationRegistry.getTargetContext();
+        final String title = "Custom Title";
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                MonthYearPickerDialog dialog = new MonthYearPickerDialog(appContext,
+                        year,
+                        month,
+                        null);
+
+                dialog.createTitle("Custom Title");
+                dialog.create();
+
+                assertEquals(title, dialog.getTitle());
+                assertEquals(dialog.getButton(AlertDialog.BUTTON_POSITIVE).getVisibility(), View.VISIBLE);
+                assertEquals(dialog.getButton(AlertDialog.BUTTON_NEGATIVE).getVisibility(), View.VISIBLE);
+            }
+        });
+    }
+
+    @Test
     public void clickPositiveButtonWithSpecificValue() throws Exception {
         final int YEAR = 0;
         final int MONTH = 1;

@@ -11,6 +11,7 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     public static final int NULL_INT = -1;
     private static final String ARG_MONTH = "month";
     private static final String ARG_YEAR = "year";
+    private static final String ARG_TITLE = "title";
     private static final String ARG_MIN_DATE = "min_date";
     private static final String ARG_MAX_DATE = "max_date";
 
@@ -27,7 +28,19 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
      * @return the fragment instance
      */
     public static MonthYearPickerDialogFragment getInstance(int month, int year) {
-        return getInstance(month, year, NULL_INT, NULL_INT);
+        return getInstance(month, year, NULL_INT, NULL_INT, null);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year  the initial year
+     * @param month the initial month
+     * @param title set custom title
+     * @return the fragment instance
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month, int year, String title) {
+        return getInstance(month, year, NULL_INT, NULL_INT, title);
     }
 
     /**
@@ -43,6 +56,24 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
                                                             int year,
                                                             long minDate,
                                                             long maxDate) {
+        return getInstance(month, year, minDate, maxDate, null);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year    the initial year
+     * @param month   the initial month
+     * @param minDate set the min date in milliseconds which should be less then initial date set.
+     * @param maxDate set the max date in milliseconds which should not be less then current date.
+     * @param title   set custom title
+     * @return MonthYearPickerDialogFragment
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            long minDate,
+                                                            long maxDate,
+                                                            String title) {
         MonthYearPickerDialogFragment datePickerDialogFragment = new
                 MonthYearPickerDialogFragment();
         Bundle bundle = new Bundle();
@@ -50,6 +81,7 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
         bundle.putInt(ARG_YEAR, year);
         bundle.putLong(ARG_MIN_DATE, minDate);
         bundle.putLong(ARG_MAX_DATE, maxDate);
+        bundle.putString(ARG_TITLE, title);
         datePickerDialogFragment.setArguments(bundle);
         return datePickerDialogFragment;
     }
@@ -73,18 +105,25 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
         int month = dataBundle.getInt(ARG_MONTH);
         long minDate = dataBundle.getLong(ARG_MIN_DATE);
         long maxDate = dataBundle.getLong(ARG_MAX_DATE);
+        String title = dataBundle.getString(ARG_TITLE);
 
         checkForValidMinDate(year, month, minDate);
         checkForValidMaxDate(year, month, maxDate);
 
         MonthYearPickerDialog simpleDatePickerDialog = new MonthYearPickerDialog(
-                getActivity(), year, month, onDateSetListener);
+                getActivity(),
+                year,
+                month,
+                onDateSetListener);
 
         if (minDate != NULL_INT)
             simpleDatePickerDialog.setMinDate(minDate);
 
         if (maxDate != NULL_INT)
             simpleDatePickerDialog.setMaxDate(maxDate);
+
+        if (title != null && !title.isEmpty())
+            simpleDatePickerDialog.createTitle(title);
 
         return simpleDatePickerDialog;
     }
