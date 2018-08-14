@@ -3,4 +3,5 @@
     <string name="show_datepicker">Click to show Picker</string>
     <string name="current_select">Values select:</string>
     <string name="with_ranges">Show with date ranges</string>
+    <string name="custom_title">Custom title</string>
 </resources>
