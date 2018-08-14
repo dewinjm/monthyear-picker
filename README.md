@@ -27,7 +27,7 @@ MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
 dialogFragment.show(getSupportFragmentManager(), null);
 ```
 
-listening changes in values
+Listening changes in values
 
 ``` java
 dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
@@ -63,6 +63,23 @@ MonthYearPickerDialogFragment dialogFragment =  MonthYearPickerDialogFragment
 dialogFragment.show(getSupportFragmentManager(), null);
 ```
 
+### Custom title
+By default the title will be the selected date. If you want to customize dialog title, add the additional custom title parameter:
+
+```java
+String customTitle = "Your Custom Title";
+MonthYearPickerDialogFragment dialogFragment = null;
+
+//Simple way
+dialogFragment = MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, customTitle);
+
+// or with date ranges:
+dialogFragment =  MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, minDate, maxDate, customTitle);
+		
+dialogFragment.show(getSupportFragmentManager(), null);
+```
 
 ## Download
 Add the repository to your project **build.gradle**:

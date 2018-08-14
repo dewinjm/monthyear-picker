@@ -28,12 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUI() {
         textView = findViewById(R.id.tv_result);
-        final CheckBox checkBox = findViewById(R.id.checkBox);
+        final CheckBox dateRangeCheckBox = findViewById(R.id.cbDateRange);
+        final CheckBox CustomTitleCheckBox = findViewById(R.id.cbCustomTitle);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayMonthYearPickerDialogFragment(checkBox.isChecked());
+                displayMonthYearPickerDialogFragment(dateRangeCheckBox.isChecked(),
+                        CustomTitleCheckBox.isChecked());
             }
         });
 
@@ -45,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
         updateViews();
     }
 
-    private MonthYearPickerDialogFragment createDialog() {
+    private MonthYearPickerDialogFragment createDialog(boolean customTitle) {
         return MonthYearPickerDialogFragment
-                .getInstance(monthSelected, yearSelected);
+                .getInstance(monthSelected,
+                        yearSelected,
+                        customTitle ? getString(R.string.custom_title).toUpperCase() : null);
     }
 
-    private MonthYearPickerDialogFragment createDialogWithRanges() {
+    private MonthYearPickerDialogFragment createDialogWithRanges(boolean customTitle) {
         final int minYear = 2010;
         final int maxYear = currentYear;
         final int maxMoth = 11;
@@ -71,13 +75,17 @@ public class MainActivity extends AppCompatActivity {
         maxDate = calendar.getTimeInMillis();
 
         return MonthYearPickerDialogFragment
-                .getInstance(monthSelected, yearSelected, minDate, maxDate);
+                .getInstance(monthSelected,
+                        yearSelected,
+                        minDate,
+                        maxDate,
+                        customTitle ? getString(R.string.custom_title).toUpperCase() : null);
     }
 
-    private void displayMonthYearPickerDialogFragment(boolean withRanges) {
+    private void displayMonthYearPickerDialogFragment(boolean withRanges, boolean customTitle) {
         MonthYearPickerDialogFragment dialogFragment = withRanges ?
-                createDialogWithRanges() :
-                createDialog();
+                createDialogWithRanges(customTitle) :
+                createDialog(customTitle);
 
         dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
             @Override
