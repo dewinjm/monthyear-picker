@@ -94,7 +94,7 @@ repositories {
 And add the library to your module **build.gradle**:
 ``` gradle
 dependencies {
-  compile 'com.github.dewinjm:monthyear-picker:1.0.1'
+  implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
 }
 ```
 ## License
