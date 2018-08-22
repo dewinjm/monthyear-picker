@@ -12,11 +12,11 @@ public class PickerView implements IPickerView {
     private String[] shortMonths;
 
     PickerView(View view) {
-        monthSpinner = view.findViewById(R.id.month);
+        monthSpinner = view.findViewById(R.id.myp_month);
         monthSpinner.setMinValue(0);
         monthSpinner.setOnLongPressUpdateInterval(200);
 
-        yearSpinner = view.findViewById(R.id.year);
+        yearSpinner = view.findViewById(R.id.myp_year);
         yearSpinner.setOnLongPressUpdateInterval(100);
     }
 
