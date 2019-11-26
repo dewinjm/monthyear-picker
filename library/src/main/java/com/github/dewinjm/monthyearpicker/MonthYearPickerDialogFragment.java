@@ -23,8 +23,8 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     /**
      * Create a new instance of the DialogFragment
      *
-     * @param year  the initial year
-     * @param month the initial month
+     * @param year  Year to show as selected
+     * @param month Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
      * @return the fragment instance
      */
     public static MonthYearPickerDialogFragment getInstance(int month, int year) {
@@ -34,8 +34,8 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     /**
      * Create a new instance of the DialogFragment
      *
-     * @param year  the initial year
-     * @param month the initial month
+     * @param year  Year to show as selected
+     * @param month Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
      * @param title set custom title
      * @return the fragment instance
      */
@@ -46,8 +46,8 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     /**
      * Create a new instance of the DialogFragment
      *
-     * @param year    the initial year
-     * @param month   the initial month
+     * @param year    Year to show as selected
+     * @param month   Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
      * @param minDate set the min date in milliseconds which should be less then initial date set.
      * @param maxDate set the max date in milliseconds which should not be less then current date.
      * @return MonthYearPickerDialogFragment
@@ -62,8 +62,8 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     /**
      * Create a new instance of the DialogFragment
      *
-     * @param year    the initial year
-     * @param month   the initial month
+     * @param year    Year to show as selected
+     * @param month   Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
      * @param minDate set the min date in milliseconds which should be less then initial date set.
      * @param maxDate set the max date in milliseconds which should not be less then current date.
      * @param title   set custom title
