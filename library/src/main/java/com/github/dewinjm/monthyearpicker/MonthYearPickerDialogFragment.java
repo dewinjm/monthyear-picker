@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MonthYearPickerDialogFragment extends DialogFragment {
     public static final int NULL_INT = -1;
@@ -14,6 +15,8 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
     private static final String ARG_TITLE = "title";
     private static final String ARG_MIN_DATE = "min_date";
     private static final String ARG_MAX_DATE = "max_date";
+    private static final String ARG_LOCALE = "locale";
+    private static final String ARG_MONTH_FORMAT = "monthFormat";
 
     private MonthYearPickerDialog.OnDateSetListener onDateSetListener;
 
@@ -41,6 +44,56 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
      */
     public static MonthYearPickerDialogFragment getInstance(int month, int year, String title) {
         return getInstance(month, year, NULL_INT, NULL_INT, title);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year   Year to show as selected
+     * @param month  Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param title  set custom title.
+     * @param locale set specific locale from a language code.
+     * @return the fragment instance
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            String title,
+                                                            Locale locale) {
+        return getInstance(month, year, NULL_INT, NULL_INT, title, locale, MonthFormat.SHORT);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year        Year to show as selected
+     * @param month       Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param title       set custom title.
+     * @param monthFormat Set month format strings.
+     * @return the fragment instance
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            String title,
+                                                            MonthFormat monthFormat) {
+        return getInstance(month, year, NULL_INT, NULL_INT, title, null, monthFormat);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year        Year to show as selected
+     * @param month       Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param title       set custom title.
+     * @param locale      set specific locale from a language code.
+     * @param monthFormat Set month format strings.
+     * @return the fragment instance
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            String title,
+                                                            Locale locale,
+                                                            MonthFormat monthFormat) {
+        return getInstance(month, year, NULL_INT, NULL_INT, title, locale, monthFormat);
     }
 
     /**
@@ -74,14 +127,84 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
                                                             long minDate,
                                                             long maxDate,
                                                             String title) {
+        return getInstance(month, year, minDate, maxDate, title, MonthFormat.SHORT);
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year    Year to show as selected
+     * @param month   Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param minDate set the min date in milliseconds which should be less then initial date set.
+     * @param maxDate set the max date in milliseconds which should not be less then current date.
+     * @param title   set custom title.
+     * @param locale  set specific locale from a language code.
+     * @return MonthYearPickerDialogFragment
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            long minDate,
+                                                            long maxDate,
+                                                            String title,
+                                                            Locale locale) {
+        return getInstance(month, year, minDate, maxDate, title, locale, MonthFormat.SHORT);
+
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year    Year to show as selected
+     * @param month   Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param minDate set the min date in milliseconds which should be less then initial date set.
+     * @param maxDate set the max date in milliseconds which should not be less then current date.
+     * @param title   set custom title.
+     * @param monthFormat Set month format strings.
+     * @return MonthYearPickerDialogFragment
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            long minDate,
+                                                            long maxDate,
+                                                            String title,
+                                                            MonthFormat monthFormat) {
+        return getInstance(month, year, minDate, maxDate, title, null, monthFormat);
+
+    }
+
+    /**
+     * Create a new instance of the DialogFragment
+     *
+     * @param year        Year to show as selected
+     * @param month       Month to show as selected, the months are from (0-11) where 0 is January and 11 is December.
+     * @param minDate     set the min date in milliseconds which should be less then initial date set.
+     * @param maxDate     set the max date in milliseconds which should not be less then current date.
+     * @param title       set custom title.
+     * @param locale      set specific locale from a language code.
+     * @param monthFormat Set month format strings.
+     * @return MonthYearPickerDialogFragment
+     */
+    public static MonthYearPickerDialogFragment getInstance(int month,
+                                                            int year,
+                                                            long minDate,
+                                                            long maxDate,
+                                                            String title,
+                                                            Locale locale,
+                                                            MonthFormat monthFormat) {
         MonthYearPickerDialogFragment datePickerDialogFragment = new
                 MonthYearPickerDialogFragment();
+
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_MONTH, month);
         bundle.putInt(ARG_YEAR, year);
         bundle.putLong(ARG_MIN_DATE, minDate);
         bundle.putLong(ARG_MAX_DATE, maxDate);
         bundle.putString(ARG_TITLE, title);
+        bundle.putSerializable(ARG_MONTH_FORMAT, monthFormat);
+
+        if (locale != null)
+            bundle.putSerializable(ARG_LOCALE, locale);
+
         datePickerDialogFragment.setArguments(bundle);
         return datePickerDialogFragment;
     }
@@ -106,14 +229,23 @@ public class MonthYearPickerDialogFragment extends DialogFragment {
         long minDate = dataBundle.getLong(ARG_MIN_DATE);
         long maxDate = dataBundle.getLong(ARG_MAX_DATE);
         String title = dataBundle.getString(ARG_TITLE);
+        MonthFormat monthFormat = (MonthFormat) dataBundle.getSerializable(ARG_MONTH_FORMAT);
+
+        Locale locale = Locale.getDefault();
 
         checkForValidMinDate(year, month, minDate);
         checkForValidMaxDate(year, month, maxDate);
+
+        if (dataBundle.containsKey(ARG_LOCALE))
+            locale = (Locale) dataBundle.getSerializable(ARG_LOCALE);
+
+        Locale.setDefault(locale);
 
         MonthYearPickerDialog simpleDatePickerDialog = new MonthYearPickerDialog(
                 getActivity(),
                 year,
                 month,
+                monthFormat,
                 onDateSetListener);
 
         if (minDate != NULL_INT)

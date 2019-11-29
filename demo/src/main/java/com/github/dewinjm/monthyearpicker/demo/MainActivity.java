@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.github.dewinjm.monthyearpicker.MonthFormat;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialog;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private int yearSelected;
     private int monthSelected;
     private TextView textView;
+    private CheckBox shortMonthsCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.tv_result);
         final CheckBox dateRangeCheckBox = findViewById(R.id.cbDateRange);
         final CheckBox CustomTitleCheckBox = findViewById(R.id.cbCustomTitle);
+        shortMonthsCheckBox = findViewById(R.id.cbShortMonth);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayMonthYearPickerDialogFragment(dateRangeCheckBox.isChecked(),
-                        CustomTitleCheckBox.isChecked());
+                displayMonthYearPickerDialogFragment(
+                        dateRangeCheckBox.isChecked(),
+                        CustomTitleCheckBox.isChecked()
+                );
             }
         });
 
@@ -51,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         return MonthYearPickerDialogFragment
                 .getInstance(monthSelected,
                         yearSelected,
-                        customTitle ? getString(R.string.custom_title).toUpperCase() : null);
+                        customTitle ? getString(R.string.custom_title).toUpperCase() : null,
+                        shortMonthsCheckBox.isChecked() ? MonthFormat.SHORT : MonthFormat.LONG);
     }
 
     private MonthYearPickerDialogFragment createDialogWithRanges(boolean customTitle) {
@@ -79,10 +85,12 @@ public class MainActivity extends AppCompatActivity {
                         yearSelected,
                         minDate,
                         maxDate,
-                        customTitle ? getString(R.string.custom_title).toUpperCase() : null);
+                        customTitle ? getString(R.string.custom_title).toUpperCase() : null,
+                        shortMonthsCheckBox.isChecked() ? MonthFormat.SHORT : MonthFormat.LONG);
     }
 
-    private void displayMonthYearPickerDialogFragment(boolean withRanges, boolean customTitle) {
+    private void displayMonthYearPickerDialogFragment(boolean withRanges,
+                                                      boolean customTitle) {
         MonthYearPickerDialogFragment dialogFragment = withRanges ?
                 createDialogWithRanges(customTitle) :
                 createDialog(customTitle);
