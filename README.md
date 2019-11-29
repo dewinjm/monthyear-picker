@@ -81,6 +81,36 @@ dialogFragment =  MonthYearPickerDialogFragment
 dialogFragment.show(getSupportFragmentManager(), null);
 ```
 
+### Month name format
+By default the months names format will short. If you want to use a specific format , add the MonthFormat parameter:
+
+```java
+MonthFormat monthFormat = MonthFormat.LONG; //MonthFormat.LONG or MonthFormat.SHORT
+//Simple way
+dialogFragment = MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, customTitle, monthFormat);
+
+//With date ranges:
+dialogFragment =  MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, minDate, maxDate, customTitle, monthFormat);
+```
+
+### Accept specify ```Locale```.
+If you want to use a specific Locale , add the Locale parameter into the constructions:
+
+```java
+Locale locale = new Locale("en-US");
+
+//Simple way
+dialogFragment = MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, customTitle, locale);
+
+//With date ranges:
+dialogFragment =  MonthYearPickerDialogFragment
+                .getInstance(monthSelected, yearSelected, minDate, maxDate, customTitle, locale);
+```
+
+
 ## Download
 Add the repository to your project **build.gradle**:
 ``` gradle
@@ -94,7 +124,7 @@ repositories {
 And add the library to your module **build.gradle**:
 ``` gradle
 dependencies {
-  compile 'com.github.dewinjm:monthyear-picker:1.0.1'
+  implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
 }
 ```
 ## License

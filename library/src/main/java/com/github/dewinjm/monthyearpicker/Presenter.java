@@ -14,17 +14,21 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
     private Calendar minDate;
     private Calendar maxDate;
     private Locale currentLocale;
-    private String[] shortMonths;
+    private String[] months;
     private int numberOfMonths;
     private IPickerView pickerView;
 
     private OnDateChangedListener onDateChangedListener;
 
     Presenter(IPickerView pickerView) {
-        setCurrentLocale(Locale.getDefault());
+        this(pickerView, MonthFormat.SHORT);
+    }
+
+    Presenter(IPickerView pickerView, MonthFormat monthFormat) {
+        setCurrentLocale(Locale.getDefault(), monthFormat);
 
         this.pickerView = pickerView;
-        pickerView.setShortMonth(shortMonths);
+        pickerView.setShortMonth(months);
         pickerView.setOnValueChanged(this);
         pickerView.setNumberOfMonth(numberOfMonths - 1);
 
@@ -43,7 +47,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         init(currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), null);
     }
 
-    private void setCurrentLocale(Locale locale) {
+    private void setCurrentLocale(Locale locale, MonthFormat monthFormat) {
         if (!locale.equals(currentLocale))
             currentLocale = locale;
 
@@ -51,16 +55,23 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         minDate = Util.getCalendarForLocale(minDate, locale);
         maxDate = Util.getCalendarForLocale(maxDate, locale);
         currentDate = Util.getCalendarForLocale(currentDate, locale);
-
         numberOfMonths = tempDate.getActualMaximum(Calendar.MONTH) + 1;
-        shortMonths = new DateFormatSymbols().getShortMonths();
 
-        if (Util.isNumericMonths(shortMonths)) {
+        switch (monthFormat) {
+            case SHORT:
+                months = new DateFormatSymbols().getShortMonths();
+                break;
+            case LONG:
+                months = new DateFormatSymbols().getMonths();
+                break;
+        }
+
+        if (Util.isNumericMonths(months)) {
             // We're in a locale where a date should either be all-numeric, or all-text.
             // All-text would require custom NumberPicker formatters for day and year.
-            shortMonths = new String[numberOfMonths];
+            months = new String[numberOfMonths];
             for (int i = 0; i < numberOfMonths; ++i)
-                shortMonths[i] = String.format(locale, "%d", i + 1);
+                months[i] = String.format(locale, "%d", i + 1);
         }
     }
 
@@ -95,7 +106,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         this.onDateChangedListener = onDateChangedListener;
     }
 
-    public void setMinDate(long min) {
+    void setMinDate(long min) {
         tempDate.setTimeInMillis(min);
         if (tempDate.get(Calendar.YEAR) == minDate.get(Calendar.YEAR)
                 && tempDate.get(Calendar.DAY_OF_YEAR) != minDate.get(Calendar.DAY_OF_YEAR)) {
@@ -109,7 +120,7 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         updateSpinners();
     }
 
-    public void setMaxDate(long max) {
+    void setMaxDate(long max) {
         tempDate.setTimeInMillis(max);
         if (tempDate.get(Calendar.YEAR) == maxDate.get(Calendar.YEAR)
                 && tempDate.get(Calendar.DAY_OF_YEAR) != maxDate.get(Calendar.DAY_OF_YEAR)) {
