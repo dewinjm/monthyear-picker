@@ -2,6 +2,7 @@
 [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
 [![jitpack](https://jitpack.io/v/dewinjm/monthyear-picker.svg)](https://jitpack.io/v/dewinjm/monthyear-picker.svg)
 [![Build Status](https://api.travis-ci.org/dewinjm/monthyear-picker.svg?branch=master)](https://travis-ci.org/dewinjm/monthyear-picker)
+<a href="https://jitpack.io/#dewinjm/monthyear-picker"> <img src="https://jitpack.io/v/dewinjm/monthyear-picker/month.svg" /></a>
 
 Month and Year picker library for Anndroid
 
