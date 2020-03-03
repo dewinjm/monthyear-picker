@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class Presenter implements NumberPicker.OnValueChangeListener {
     static final int DEFAULT_START_YEAR = 1900;
-    private static final int DEFAULT_END_YEAR = 2100;
+    static final int DEFAULT_END_YEAR = 2100;
     private Calendar tempDate;
     private Calendar currentDate;
     private Calendar minDate;
@@ -158,8 +158,8 @@ public class Presenter implements NumberPicker.OnValueChangeListener {
         }
 
         pickerView.dateUpdate(PickerField.MONTH,
-                monthMax,
-                monthMin,
+                maxDate.get(Calendar.MONTH),
+                minDate.get(Calendar.MONTH),
                 currentDate);
 
         pickerView.dateUpdate(PickerField.YEAR,
