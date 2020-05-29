@@ -5,13 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.dewinjm.monthyearpicker.MonthFormat;
+import com.github.dewinjm.monthyearpicker.MonthYearDialog;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialog;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends AppCompatActivity {
     private int currentYear;
@@ -91,20 +95,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayMonthYearPickerDialogFragment(boolean withRanges,
                                                       boolean customTitle) {
-        MonthYearPickerDialogFragment dialogFragment = withRanges ?
-                createDialogWithRanges(customTitle) :
-                createDialog(customTitle);
 
-        dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(int year, int monthOfYear) {
-                monthSelected = monthOfYear;
-                yearSelected = year;
-                updateViews();
-            }
-        });
-
-        dialogFragment.show(getSupportFragmentManager(), null);
+        try {
+            new MonthYearDialog(this)
+                    //.setMaxYear(2012)
+                    //.setMinYear(2015)
+                    //.setYearRange(2002, 2010)
+                    .setSelectedYear(2009)
+                    //.setSelectedMonth(Calendar.DECEMBER)
+//                    .setMaxMonth(Calendar.FEBRUARY)
+//                    .setMinMonth(Calendar.JULY)
+                    .build()
+                    .show();
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), LENGTH_LONG).show();
+        }
+//
+//        MonthYearPickerDialogFragment dialogFragment = withRanges ?
+//                createDialogWithRanges(customTitle) :
+//                createDialog(customTitle);
+//
+//        dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(int year, int monthOfYear) {
+//                monthSelected = monthOfYear;
+//                yearSelected = year;
+//                updateViews();
+//            }
+//        });
+//
+//        dialogFragment.show(getSupportFragmentManager(), null);
     }
 
     private void updateViews() {
